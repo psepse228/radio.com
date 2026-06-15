@@ -112,16 +112,13 @@ ul{list-style:none}
 .mob-menu a:hover{color:var(--red)}
 
 /* ── HERO ──
-   Strict two-zone layout:
-   [VIDEO ZONE: 62vh, zero text]
-   [RED DIVIDER: 4px]
-   [TEXT ZONE: white, all text below video]
+   Side-by-side: video LEFT (overflow:hidden, contained) | text RIGHT (white)
 */
-#hero{display:flex;flex-direction:column;min-height:100vh}
+#hero{display:flex;flex-direction:row;height:100vh;overflow:hidden}
 
 .hero-video-zone{
-  height:100vh;
-  min-height:100vh;
+  width:58%;
+  height:100%;
   position:relative;
   overflow:hidden;
   flex-shrink:0;
@@ -144,7 +141,7 @@ ul{list-style:none}
   z-index:2;
 }
 
-.hero-divider{height:4px;background:var(--red);flex-shrink:0}
+.hero-divider{width:4px;height:100%;background:var(--red);flex-shrink:0}
 
 .hero-text-zone{
   background:var(--white);
@@ -153,9 +150,10 @@ ul{list-style:none}
   flex-direction:column;
   justify-content:center;
   align-items:flex-start;
-  padding:56px 72px 68px;
+  padding:48px 52px;
   position:relative;
-  overflow:hidden;
+  overflow-y:auto;
+  overflow-x:hidden;
 }
 /* Ghost watermark — purely decorative */
 .hero-text-zone::after{
@@ -183,7 +181,7 @@ ul{list-style:none}
 }
 .hero-h1{
   font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(3.6rem,9vw,9.5rem);
+  font-size:clamp(3rem,5.5vw,7rem);
   letter-spacing:.025em;
   line-height:.92;
   color:var(--ink);
@@ -513,7 +511,10 @@ ul{list-style:none}
   #nav{padding:0 28px}
   .nav-links,.nav-btn{display:none}
   .burger{display:flex}
-  .hero-text-zone{padding:40px 28px 56px}
+  #hero{flex-direction:column;height:auto;overflow:visible}
+  .hero-video-zone{width:100%;height:60vh}
+  .hero-divider{width:100%;height:4px}
+  .hero-text-zone{padding:40px 28px 56px;overflow:visible}
   .hero-text-zone::after{display:none}
   #statement{padding:72px 28px}
   .statement-image{display:none}
@@ -528,7 +529,7 @@ ul{list-style:none}
   .footer-meta{text-align:left}
 }
 @media(max-width:560px){
-  .hero-video-zone{height:100vh;min-height:100vh}
+  .hero-video-zone{height:50vh}
   .specs-grid{grid-template-columns:1fr}
   .features-grid{grid-template-columns:1fr}
   .hero-ctas,.purchase-actions{flex-direction:column}
@@ -536,6 +537,121 @@ ul{list-style:none}
   #footer{flex-direction:column;gap:28px}
   .footer-meta{text-align:center}
   .footer-links{flex-wrap:wrap;justify-content:center}
+}
+
+/* ── CATALOG ── */
+#catalog{
+  background:var(--snow);
+  padding:100px 72px;
+  border-bottom:1px solid var(--rule);
+}
+.catalog-tabs{
+  display:flex;
+  border-bottom:2px solid var(--rule);
+  margin-top:32px;margin-bottom:48px;
+  gap:0;
+}
+.catalog-tab{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:.72rem;
+  letter-spacing:.22em;text-transform:uppercase;
+  padding:12px 32px;
+  color:var(--silver);
+  border-bottom:3px solid transparent;
+  margin-bottom:-2px;
+  cursor:pointer;
+  transition:color .2s,border-color .2s;
+  background:none;border-top:none;border-left:none;border-right:none;
+}
+.catalog-tab.active{color:var(--red);border-bottom-color:var(--red)}
+.catalog-panel{display:none}
+.catalog-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.product-card{
+  display:flex;
+  background:var(--white);
+  min-height:200px;
+  transition:box-shadow .25s;
+}
+.product-card:hover{box-shadow:0 4px 24px rgba(0,0,0,.08)}
+.product-img-zone{
+  width:40%;
+  background:#0C0C0C;
+  display:flex;align-items:center;justify-content:center;
+  padding:24px 20px;
+  overflow:hidden;
+  flex-shrink:0;
+  position:relative;
+}
+.product-img-zone img{
+  max-width:100%;max-height:150px;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 4px 14px rgba(200,16,46,.18));
+  transition:transform .35s cubic-bezier(.22,1,.36,1);
+}
+.product-card:hover .product-img-zone img{transform:scale(1.06)}
+.product-info-zone{
+  flex:1;
+  background:var(--white);
+  padding:28px 28px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  border-left:none;
+}
+.product-badge{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:.6rem;
+  letter-spacing:.24em;text-transform:uppercase;
+  color:var(--red);
+  margin-bottom:8px;
+}
+.product-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:1rem;
+  letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink);
+  line-height:1.25;margin-bottom:8px;
+}
+.product-note{
+  font-family:'DM Sans',sans-serif;
+  font-size:.8rem;color:var(--silver);
+  line-height:1.5;
+  margin-bottom:16px;flex:1;
+}
+.product-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;
+  border-top:1px solid var(--rule);
+  padding-top:14px;margin-top:auto;
+}
+.product-price{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.4rem;letter-spacing:.04em;
+  color:var(--red);
+}
+.product-price small{
+  font-family:'DM Sans',sans-serif;
+  font-size:.65rem;letter-spacing:.04em;
+  color:var(--silver);font-weight:400;
+  display:block;text-transform:uppercase;
+}
+.product-cta{
+  font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:.62rem;
+  letter-spacing:.18em;text-transform:uppercase;
+  padding:8px 18px;
+  background:var(--red);color:#fff;
+  border:none;cursor:pointer;
+  white-space:nowrap;
+  transition:background .2s,transform .15s;
+}
+.product-cta:hover{background:var(--red-vivid);transform:translateY(-1px)}
+@media(max-width:900px){
+  #catalog{padding:72px 28px}
+  .catalog-panel.active{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .product-card{flex-direction:column}
+  .product-img-zone{width:100%;height:180px}
 }
 </style>
 </head>
@@ -545,9 +661,9 @@ ul{list-style:none}
 <nav id="nav">
   <div class="nav-logo"><span>RADIO</span>COM.UZ</div>
   <ul class="nav-links">
+    <li><a href="#catalog">Каталог</a></li>
     <li><a href="#specs">Характеристики</a></li>
     <li><a href="#features">Возможности</a></li>
-    <li><a href="#spec-table">Спецификации</a></li>
     <li><a href="#purchase">Купить</a></li>
   </ul>
   <button class="nav-btn" onclick="document.getElementById('purchase').scrollIntoView({behavior:'smooth'})">Получить предложение</button>
@@ -558,9 +674,9 @@ ul{list-style:none}
 
 <!-- MOBILE MENU -->
 <div class="mob-menu" id="mob-menu">
+  <a href="#catalog" class="mob-lnk">Каталог</a>
   <a href="#specs" class="mob-lnk">Характеристики</a>
   <a href="#features" class="mob-lnk">Возможности</a>
-  <a href="#spec-table" class="mob-lnk">Спецификации</a>
   <a href="#purchase" class="mob-lnk">Купить</a>
 </div>
 
@@ -614,11 +730,293 @@ ul{list-style:none}
   <img class="statement-image reveal" src="radiocom_white_bg.jpg" alt="Motorola T82 Extreme" loading="lazy" style="transition-delay:.12s">
 </section>
 
+<!-- ═══ CATALOG ═══ -->
+<section id="catalog">
+  <div class="section-header">
+    <div class="section-label reveal">
+      <span class="sec-num">02</span>
+      Все модели
+    </div>
+    <h2 class="section-title reveal" style="transition-delay:.06s">Каталог продукции</h2>
+  </div>
+
+  <!-- TABS -->
+  <div class="catalog-tabs">
+    <button class="catalog-tab active" data-target="cat-amateur">Любительские рации</button>
+    <button class="catalog-tab" data-target="cat-pro">Профессиональные</button>
+  </div>
+
+  <!-- AMATEUR -->
+  <div class="catalog-panel active" id="cat-amateur">
+
+    <div class="product-card reveal">
+      <div class="product-img-zone">
+        <img src="https://radiocom.uz/wp-content/uploads/2021/06/%D1%8242.jpg" alt="T42" loading="lazy">
+      </div>
+      <div class="product-info-zone">
+        <div>
+          <div class="product-badge">Любительская</div>
+          <div class="product-name">Motorola Talkabout T42</div>
+          <div class="product-note">8 PMR-каналов · дальность до 4 км · компактный корпус</div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">500 000<small>сум / комплект</small></div>
+          <a class="product-cta" href="#purchase">Запросить</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-zone">
+        <img src="https://radiocom.uz/wp-content/uploads/2021/06/%D1%8282.png" alt="T62" loading="lazy">
+      </div>
+      <div class="product-info-zone">
+        <div>
+          <div class="product-badge">Любительская</div>
+          <div class="product-name">Motorola Talkabout T62</div>
+          <div class="product-note">8 каналов · до 8 км · LED-фонарик · защита IP54</div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">1 100 000<small>сум / комплект</small></div>
+          <a class="product-cta" href="#purchase">Запросить</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-zone">
+        <img src="https://radiocom.uz/wp-content/uploads/2021/06/%D1%8272.png" alt="T72" loading="lazy">
+      </div>
+      <div class="product-info-zone">
+        <div>
+          <div class="product-badge">Любительская</div>
+          <div class="product-name">Motorola Talkabout T72</div>
+          <div class="product-note">16 каналов · до 8 км · виброоповещение · IP54</div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">1 300 000<small>сум / комплект</small></div>
+          <a class="product-cta" href="#purchase">Запросить</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-zone">
+        <img src="https://radiocom.uz/wp-content/uploads/2021/06/%D1%8282-%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D1%8B%D0%B9.png" alt="T82" loading="lazy">
+      </div>
+      <div class="product-info-zone">
+        <div>
+          <div class="product-badge">Любительская</div>
+          <div class="product-name">Motorola Talkabout T82</div>
+          <div class="product-note">16 каналов · до 8 км · ЖК-дисплей · USB-зарядка</div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">1 400 000<small>сум / комплект</small></div>
+          <a class="product-cta" href="#purchase">Запросить</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-zone">
+        <img src="https://radiocom.uz/wp-content/uploads/2021/06/%D1%8D%D0%BA%D1%81%D1%82%D1%80%D0%B8%D0%BC.png" alt="T82 Extreme" loading="lazy">
+      </div>
+      <div class="product-info-zone">
+        <div>
+          <div class="product-badge">Флагман · IP67</div>
+          <div class="product-name">Motorola Talkabout T82 Extreme</div>
+          <div class="product-note">до 10 км · защита IP67 · USB-C · виброоповещение · 16 каналов</div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">1 600 000<small>сум / комплект</small></div>
+          <a class="product-cta" href="#purchase">Запросить</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-zone">
+        <img src="https://radiocom.uz/wp-content/uploads/2021/06/%D1%8292.png" alt="T92H2O" loading="lazy">
+      </div>
+      <div class="product-info-zone">
+        <div>
+          <div class="product-badge">Водонепроницаемая · IP67</div>
+          <div class="product-name">Motorola TLKR T92 H2O</div>
+          <div class="product-note">до 10 км · IP67 · плавает на воде · для экстремального отдыха</div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">1 700 000<small>сум / комплект</small></div>
+          <a class="product-cta" href="#purchase">Запросить</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-zone">
+        <img src="https://radiocom.uz/wp-content/uploads/2022/03/%D1%82185-1.png" alt="XT185" loading="lazy">
+      </div>
+      <div class="product-info-zone">
+        <div>
+          <div class="product-badge">Лицензионная</div>
+          <div class="product-name">Motorola Talkabout XT185</div>
+          <div class="product-note">8 каналов · дальность до 8 км · безлицензионный PMR446</div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">1 500 000<small>сум / комплект</small></div>
+          <a class="product-cta" href="#purchase">Запросить</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-zone">
+        <img src="https://radiocom.uz/wp-content/uploads/2021/06/clp.jpg" alt="CLP 446" loading="lazy">
+      </div>
+      <div class="product-info-zone">
+        <div>
+          <div class="product-badge">Профи-любительская</div>
+          <div class="product-name">Motorola CLP 446</div>
+          <div class="product-note">8 каналов · компактный клипсовый корпус · гостиницы, рестораны</div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">2 300 000<small>сум / шт.</small></div>
+          <a class="product-cta" href="#purchase">Запросить</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PROFESSIONAL -->
+  <div class="catalog-panel" id="cat-pro">
+
+    <div class="product-card reveal">
+      <div class="product-img-zone">
+        <img src="https://radiocom.uz/wp-content/uploads/2021/06/140.png" alt="DP1400" loading="lazy">
+      </div>
+      <div class="product-info-zone">
+        <div>
+          <div class="product-badge">Цифровая DMR</div>
+          <div class="product-name">Motorola DP1400</div>
+          <div class="product-note">16 каналов · аналог/DMR · IP54 · для бизнеса начального уровня</div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">4 800 000<small>сум / шт.</small></div>
+          <a class="product-cta" href="#purchase">Запросить</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-zone">
+        <img src="https://radiocom.uz/wp-content/uploads/2021/06/240.png" alt="DP2400" loading="lazy">
+      </div>
+      <div class="product-info-zone">
+        <div>
+          <div class="product-badge">Цифровая DMR Tier II</div>
+          <div class="product-name">Motorola DP2400</div>
+          <div class="product-note">256 каналов · DMR Tier II · шифрование · Man-Down alert</div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">7 200 000<small>сум / шт.</small></div>
+          <a class="product-cta" href="#purchase">Запросить</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-zone">
+        <img src="https://radiocom.uz/wp-content/uploads/2021/06/440.png" alt="DP4400" loading="lazy">
+      </div>
+      <div class="product-info-zone">
+        <div>
+          <div class="product-badge">Профессиональная · IP57</div>
+          <div class="product-name">Motorola DP4400</div>
+          <div class="product-note">1000 каналов · IP57 · GPS · Bluetooth · Integrated Voice</div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">8 000 000<small>сум / шт.</small></div>
+          <a class="product-cta" href="#purchase">Запросить</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-zone">
+        <img src="https://radiocom.uz/wp-content/uploads/2021/06/460.png" alt="DP4600" loading="lazy">
+      </div>
+      <div class="product-info-zone">
+        <div>
+          <div class="product-badge">Профессиональная · дисплей</div>
+          <div class="product-name">Motorola DP4600</div>
+          <div class="product-note">1000 каналов · цветной дисплей · GPS · BT · IP57</div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">8 300 000<small>сум / шт.</small></div>
+          <a class="product-cta" href="#purchase">Запросить</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-zone">
+        <img src="https://radiocom.uz/wp-content/uploads/2021/06/480.png" alt="DP4800" loading="lazy">
+      </div>
+      <div class="product-info-zone">
+        <div>
+          <div class="product-badge">Топ профессиональная</div>
+          <div class="product-name">Motorola DP4800</div>
+          <div class="product-note">1000 каналов · дисплей · GPS · шифрование · IP57 · лучший выбор для предприятий</div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">9 170 000<small>сум / шт.</small></div>
+          <a class="product-cta" href="#purchase">Запросить</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-zone">
+        <img src="https://radiocom.uz/wp-content/uploads/2021/06/e473df64de38f06932bc6f3b060a6657.png" alt="DM2600" loading="lazy">
+      </div>
+      <div class="product-info-zone">
+        <div>
+          <div class="product-badge">Автомобильная</div>
+          <div class="product-name">Motorola DM2600</div>
+          <div class="product-note">Мобильная DMR · 256 каналов · до 45 Вт · для автотранспорта</div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">8 200 000<small>сум / шт.</small></div>
+          <a class="product-cta" href="#purchase">Запросить</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal">
+      <div class="product-img-zone">
+        <img src="https://radiocom.uz/wp-content/uploads/2021/06/4600.png" alt="DM4600" loading="lazy">
+      </div>
+      <div class="product-info-zone">
+        <div>
+          <div class="product-badge">Автомобильная топ</div>
+          <div class="product-name">Motorola DM4600</div>
+          <div class="product-note">1000 каналов · дисплей · GPS · Bluetooth · до 45 Вт · IP57</div>
+        </div>
+        <div class="product-footer">
+          <div class="product-price">10 200 000<small>сум / шт.</small></div>
+          <a class="product-cta" href="#purchase">Запросить</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- ═══ SPECS ═══ -->
 <section id="specs">
   <div class="section-header">
     <div class="section-label reveal">
-      <span class="sec-num">02</span>
+      <span class="sec-num">03</span>
       Ключевые показатели
     </div>
     <h2 class="section-title reveal" style="transition-delay:.06s">Данные в цифрах</h2>
@@ -656,7 +1054,7 @@ ul{list-style:none}
 <section id="features">
   <div class="section-header">
     <div class="section-label reveal">
-      <span class="sec-num">03</span>
+      <span class="sec-num">04</span>
       Преимущества
     </div>
     <h2 class="section-title reveal" style="transition-delay:.06s">Сделана для работы</h2>
@@ -745,7 +1143,7 @@ ul{list-style:none}
 <section id="spec-table">
   <div class="section-header">
     <div class="section-label reveal">
-      <span class="sec-num">04</span>
+      <span class="sec-num">05</span>
       Полные характеристики
     </div>
     <h2 class="section-title reveal" style="transition-delay:.06s">Технические данные</h2>
@@ -828,6 +1226,16 @@ ul{list-style:none}
 </footer>
 
 <script>
+/* ── CATALOG TABS ── */
+document.querySelectorAll('.catalog-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.catalog-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.catalog-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.target).classList.add('active');
+  });
+});
+
 /* ── NAV SCROLL ── */
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
